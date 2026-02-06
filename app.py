@@ -142,19 +142,25 @@ st.divider()
 # --------------------------------------------------
 # LOAD DATA
 # --------------------------------------------------
+import pandas as pd
+import streamlit as st
+
 @st.cache_data
 def load_data():
-    df = pd.read_csv(
-        "data/clean_2026.csv",
-        sep=",",
-        encoding="utf-8",
-        engine="python"
-    )
-    df["Arrival_Date"] = pd.to_datetime(df["Arrival_Date"], errors="coerce")
-    return df
-if df.empty:
-st.error("Dataset failed to load. Please check CSV format.")
-st.stop()
+    try:
+        df = pd.read_csv("data/clean_2026.csv")
+        df["Arrival_Date"] = pd.to_datetime(df["Arrival_Date"], errors="coerce")
+
+        if df.empty:
+            st.error("Dataset is empty.")
+            st.stop()
+
+        return df
+
+    except Exception as e:
+        st.error("Dataset failed to load. Please check CSV format.")
+        st.exception(e)
+        st.stop()
 
 
 df = load_data()
@@ -395,5 +401,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
