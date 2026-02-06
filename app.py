@@ -144,9 +144,18 @@ st.divider()
 # --------------------------------------------------
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/clean_2026.csv")
-    df["Arrival_Date"] = pd.to_datetime(df["Arrival_Date"])
+    df = pd.read_csv(
+        "data/clean_2026.csv",
+        sep=",",
+        encoding="utf-8",
+        engine="python"
+    )
+    df["Arrival_Date"] = pd.to_datetime(df["Arrival_Date"], errors="coerce")
     return df
+    if df.empty:
+    st.error("Dataset failed to load. Please check CSV format.")
+    st.stop()
+
 
 df = load_data()
 
@@ -386,3 +395,4 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
