@@ -152,9 +152,9 @@ def load_data():
     )
     df["Arrival_Date"] = pd.to_datetime(df["Arrival_Date"], errors="coerce")
     return df
-    if df.empty:
-    st.error("Dataset failed to load. Please check CSV format.")
-    st.stop()
+if df.empty:
+st.error("Dataset failed to load. Please check CSV format.")
+st.stop()
 
 
 df = load_data()
@@ -395,4 +395,5 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
